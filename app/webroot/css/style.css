@@ -220,6 +220,13 @@ input[type="text"], input[type="email"], input[type="password"]{
   margin: 100px 0;
 }
 
+.back2{
+  background-color: #0073d4;
+  color:#fff !important;
+  border:none !important;
+  margin: 100px 0;
+}
+
 
 /* -------------------------------------------------------------------------------------------------------
                                             ADMIN

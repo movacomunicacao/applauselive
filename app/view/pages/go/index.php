@@ -14,13 +14,6 @@ declare(strict_types=1);
 
 session_start();
 
-//include '../../../../app/config/database.php';
-//include '../../../../app/config/directories.php';
-//include 'app/view/elements/site/head.php';
-
-//echo  $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-//echo $_GET['step'];
-
 echo '<style>header, footer{display:none;}</style>';
 
 // -----------------------------
@@ -184,23 +177,28 @@ function validate_step(string $step, array $post, array &$data): array {
 // -----------------------------
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $postedStep = $_POST['step'] ?? $step;
-  if (!in_array($postedStep, $steps, true)) $postedStep = $step;
 
-  $errors = validate_step($postedStep, $_POST, $data);
+    $postedStep = $_POST['step'] ?? $step;
+    if (!in_array($postedStep, $steps, true)) {
+        $postedStep = $step;
+    }
 
-  if (!empty($errors)) {
-    $_SESSION['wizard_errors'] = $errors;
-    redirect_to($wizardBase, $postedStep);
-  }
+    // ✅ FIRST: If user clicked "back", skip validation entirely
+    if (isset($_POST['go']) && $_POST['go'] === 'back') {
+        $prev = prev_step($steps, $postedStep);
+        redirect_to($wizardBase, $prev ?? 'start');
+    }
 
-  if (isset($_POST['go']) && $_POST['go'] === 'back') {
-    $prev = prev_step($steps, $postedStep);
-    redirect_to($wizardBase, $prev ?? 'start');
-  }
+    // ✅ Only validate when moving forward
+    $errors = validate_step($postedStep, $_POST, $data);
 
-  $next = next_step($steps, $postedStep);
-  redirect_to($wizardBase, $next ?? 'finish');
+    if (!empty($errors)) {
+        $_SESSION['wizard_errors'] = $errors;
+        redirect_to($wizardBase, $postedStep);
+    }
+
+    $next = next_step($steps, $postedStep);
+    redirect_to($wizardBase, $next ?? 'finish');
 }
 
 $errors = $_SESSION['wizard_errors'] ?? [];
@@ -237,6 +235,12 @@ unset($_SESSION['wizard_errors']);
           <button type="submit" class="btn btn-outline-light">Vamos iniciar!</button>
         </form>
 
+        <div class="text-center btn-top-margin">
+            <a href="/applauselive" class="back2">
+                  <i class="fas fa-arrow-left"></i> voltar
+            </a>
+          </div>
+
       <?php elseif ($step === 'name'): ?>
         <form method="post" action="<?=h($wizardBase)?>">
           <input type="hidden" name="step" value="name">
@@ -251,6 +255,14 @@ unset($_SESSION['wizard_errors']);
           <div class="text-center btn-top-margin">
             <button type="submit" class="btn btn-home mt-4">continuar</button>
           </div>
+
+          <div class="text-center btn-top-margin">
+            <a href="/applauselive" class="back2">
+                  <i class="fas fa-arrow-left"></i> voltar
+            </a>
+          </div>
+          
+
         </form>
 
       <?php elseif ($step === 'email'): ?>
