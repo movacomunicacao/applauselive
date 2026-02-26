@@ -1,0 +1,394 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+body{
+  font-size: 16px;
+  color: #666;
+  font-family: "Fira Sans", sans-serif;
+  font-weight: 400;
+}
+
+a{
+  text-decoration: none !important;
+  color:#333;
+}
+
+h1, h2{
+  font-weight: 700;
+}
+
+h1{
+  color:#0073d4;
+  font-style: italic;
+}
+
+header nav a{
+  margin-left: 30px;
+  color: #333;
+}
+
+footer{
+  background-color:#0073d4;
+  color: #fff;
+}
+
+footer .logo{
+  filter: invert(100%);
+  filter: brightness(1000%);
+}
+
+footer nav a{
+  color:#fff;
+  margin-right: 30px;
+}
+
+footer a{
+  color:#fff;
+}
+
+footer small{
+  font-size: 0.75em;
+}
+
+input[type="text"], input[type="email"], input[type="password"]{
+    font-size:1.2em;
+    border-color:#666;
+    border-radius:16px;
+    color:#666;
+}
+
+.gopages{
+  background-color:#0073d4;
+  color: #fff;
+  min-height: 2000px;
+  font-weight: 200 !important;
+}
+
+.gopages h1{
+  color:#fff;
+}
+
+.gopages .btn{
+  font-size: 1.2em;
+  border:solid 5px #fff;
+  border-radius: 70px;
+  padding: 25px 70px;
+}
+
+.gopages-internal .btn{
+  background-color: #fff;
+  color:#0073d4;
+  font-size: 1em;
+  border-radius: 30px;
+  padding: 15px 50px;
+}
+
+.gopages input {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  border-radius: none;
+  
+}
+
+.gopages ::placeholder {
+  color: #ddd;
+}
+
+.gopages input[type="text"], .gopages input[type="email"], .gopages input[type="password"], .gopages select{
+  background-color:#0073d4;
+  color: #fff;
+  border-bottom:solid 1px #fff;
+  border-radius: 0 !important;
+  font-size: 1em;
+}
+
+.gopages select{
+  border:none;
+}
+
+.gopages textarea{
+  background-color:#0073d4;
+  color: #fff;
+  border-bottom:solid 2px #fff;
+  border-radius: 25px !important;
+  padding: 35px;
+  font-size: 1em;
+}
+
+.gopages select option{
+  padding:18px;
+  padding-left: 40px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin: 15px 0;
+}
+
+.gopages .option{
+  padding:18px;
+  padding-left: 40px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin: 15px 0;
+}
+
+.btn-top-margin{
+  margin-top:200px;
+}
+
+.bg-blue{
+  background-color:#0073d4;
+}
+
+.error{
+  color:#fa9d9d;
+  font-weight: 300;
+  font-size: 0.8em;
+}
+
+.tip{
+  color:#fff;
+  font-weight: 300;
+  font-size: 0.8em;
+  line-height: 1.2em;
+}
+
+.people-img{
+  border-radius: 60px;
+}
+
+.people-img.active {
+  border-color: #0fff;
+  background-color: #e7f1ff;
+  border-width: 5px;
+}
+
+.option.optionactive{
+  border-color: rgb(189, 230, 253);
+  background-color: #439be3;
+  border-width: 5px;
+}
+
+.custom-file {
+  font-size: 1em;
+  color: #fff;
+}
+
+.custom-file::file-selector-button {
+  background: #fff;
+  color: #007bff;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: 0.2s;
+}
+
+.custom-file::file-selector-button:hover {
+  background: #0056b3;
+}
+
+.custom-upload {
+  background: #fff;
+  color: #007bff;
+  padding: 25px 50px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.custom-upload:hover {
+  background: #0056b3;
+}
+
+.dropdown {
+  display: block; /* Always expanded */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.blue-text{
+  color:#0073d4;
+}
+
+.back{
+  background-color: #0073d4;
+  color:#fff;
+  border:none !important;
+  margin: 100px 0;
+}
+
+
+/* -------------------------------------------------------------------------------------------------------
+                                            ADMIN
+--------------------------------------------------------------------------------------------------------*/
+
+
+#admin{
+  background-color: #fff !important;
+}
+
+#admin aside{
+  height: 100vh;
+}
+
+#admin aside a{
+  color:#fff;
+}
+
+#admin .logout{
+  color:#111;
+  font-size: 30px;
+  padding: 15px;
+}
+
+#admin .bt_add{
+  background-color: #27BA00;
+  color:#fff;
+  padding: 12px 15px;
+}
+
+#admin .bt_add:hover{
+  background-color: #1E7507;
+}
+
+#admin .list-item{
+  border:solid 1px #ccc;
+  border-radius: 12px;
+}
+
+#admin .bt_edit{
+  margin-right: 20px;
+}
+
+#admin label{
+  margin-top: 20px;
+}
+
+.ck-editor__editable {
+    min-height: 300px;
+}
+
+.name-card{
+  color:#333;
+  font-weight: 700;
+}
+
+
+/* -------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+**********************************************************************************************************
+                                         MOBILE STYLING
+**********************************************************************************************************
+----------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------*/
+
+
+@media only screen and (min-device-width: 10px) and (max-device-width: 575px) {
+
+  body{
+    font-size: 3em;
+  }
+
+  main{
+    min-height: 1500px;
+  }
+
+  h1, h2{
+    font-size: 1.8em;
+  }
+
+  footer nav a{
+    display: block;
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  header nav{
+    display: none;
+  }
+
+  h1{
+    font-size: 1.5em;
+  }
+
+  .card-text{
+    font-size: 0.65em;
+    font-style: italic;
+    color:#aaa;
+  }
+
+  .card{
+    border-radius: 16px;
+    border-color:#666;
+  }
+
+  form .btn{
+    font-size:1.3em;
+    background-color:#0073d4;
+    color:#fff;
+    border-radius:20px;
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  form label{
+    font-weight: 700;
+  }
+
+  .text-message{
+    font-size:0.9em;
+    padding: 60px;
+  }
+
+  .quotes{
+    font-size: 1.2em;
+    font-color:#111;
+    font-weight: 700;
+  }
+
+  .home-button{
+    background-color:#0073d4;
+    color:#fff;
+    border-radius: 60px;
+    font-size: 1.2em; 
+    line-height: 1.15em;
+  }
+
+  .home-button a{
+    color:#fff;
+  }
+
+  .home-button i{
+    font-size: 2.8em;
+  }
+
+}
+
+
+
+/* -------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+**********************************************************************************************************
+                                         UTILITIES
+**********************************************************************************************************
+----------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------*/
+
+
+.transition{
+	-webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
+	-ms-transition: all 0.2s;
+	-o-transition: all 0.2s;
+	transition: all 0.2s;
+}
+
+.parallax{
+	background-attachment: fixed;
+  background-position: center;
+  background-repeat: repeat;
+}
