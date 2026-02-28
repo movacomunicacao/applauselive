@@ -227,6 +227,18 @@ input[type="text"], input[type="email"], input[type="password"]{
   margin: 100px 0;
 }
 
+.bottom-items{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-bottom: 0;
+  padding: 30px;
+  background-color: #fff;
+  border-top: solid 2px #aaa;
+  z-index: 2;
+}
+
 
 /* -------------------------------------------------------------------------------------------------------
                                             ADMIN
@@ -371,6 +383,18 @@ input[type="text"], input[type="email"], input[type="password"]{
 
   .home-button i{
     font-size: 2.8em;
+  }
+
+  .bottom-items-btn{
+    background-color:#0073d4;
+    color:#fff !important;
+    border-radius: 20px;
+    font-size: 0.9em; 
+    padding: 20px 40px 12px 40px;
+  }
+
+  .bottom-items-btn .fa-paper-plane{
+    font-size: 1.1em;
   }
 
 }

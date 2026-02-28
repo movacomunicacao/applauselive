@@ -12,5 +12,5 @@ $sitename = explode('/', $_SERVER['PHP_SELF']);
 if(!defined('SITE_NAME')){
   define('SITE_NAME', $sitename[1]);
 }
-header("Location:/".SITE_NAME."/admin");
+header("Location:/".SITE_NAME);
 ?>

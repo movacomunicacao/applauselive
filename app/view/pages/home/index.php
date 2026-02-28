@@ -1,38 +1,38 @@
+<?php
+    require (ELEMENTS_DIR .'head.php');
+?>
 
-<div class="container-fluid">
+<body>
+  <div class="container-fluid mt-5 pt-5">
 
-  <div class="row justify-content-center py-5 px-lg-0 px-5">
-    <div class="col-lg-8 col-12 py-5">
-      <!--
-      <h1>Olá!</h1>
-      <p>
-        Seja bem-vindo(a) a esta ação applause!<br>
-      </p>
-      -->
-
-      <div class="row justify-content-center text-center">
-        <div class="col-10 home-button py-5 px-5 ">
-          <a href="<?=ROOT?>go/" target="_top">
-            <p><i class="far fa-paper-plane"></i></p>
-            <p>Enviar uma<br>mensagem</p>
-          </a>
-        </div>
-      </div>
+    <div class="row justify-content-center py-5">
+      <div class="col-lg-5 col-10">
+	       <?php
+	        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+	           echo '<p class="text-center">Accesso negado. Tente novamente.</p>';
+	        }
+	       ?>
 
 
-      <div class="row justify-content-center text-center mt-5">
-        <div class="col-10 home-button py-5 px-5 " style="background-color:#001149 !important;">
-          <a href="<?=ROOT?>admin" target="_top">
-            <p><i class="far fa-eye"></i></p>
-            <p>Ver mensagens<br>enviadas para mim</p>
-            <div style="font-size:0.6em; line-height:1.2em;">*É preciso estar cadastrado para visualizar mensagens.</div>
-          </a>
-        </div>
-      </div>
+			     <form action="<?= ROOT.'admin/4'?>" method="post" enctype="multipart/form-data" class="mt-5">
 
-      
+            <div class="form-group text-start pt-5">
+               <label for="user">Usuário</label><br>
+               <input type="text" name="user" class="form-control mt-0 form-control-lg"/><br>
 
-    </div>
+               <label for="password">Senha</label><br>
+               <input type="password" name="password" class="form-control mt-0 form-control-lg"/><br>
+            </div>
+
+            <div class="text-center mt-1">
+   						<button type="submit" class="btn text-center submit-login transition px-5 py-3">Entrar</button>
+   					</div>
+
+		      </form>
+		</div>
+
+	</div>
+
   </div>
-
-</div>
+</body>
+</html>

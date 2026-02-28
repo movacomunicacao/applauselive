@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 session_start();
 
+//echo $_SERVER['REQUEST_URI'];
+
+
 echo '<style>header, footer{display:none;}</style>';
 
 // -----------------------------
@@ -236,7 +239,7 @@ unset($_SESSION['wizard_errors']);
         </form>
 
         <div class="text-center btn-top-margin">
-            <a href="/applauselive" class="back2">
+            <a href="<?=ROOT.'admin/'?>" class="back2">
                   <i class="fas fa-arrow-left"></i> voltar
             </a>
           </div>
@@ -257,7 +260,7 @@ unset($_SESSION['wizard_errors']);
           </div>
 
           <div class="text-center btn-top-margin">
-            <a href="/applauselive" class="back2">
+            <a href="<?=ROOT?>" class="back2">
                   <i class="fas fa-arrow-left"></i> voltar
             </a>
           </div>

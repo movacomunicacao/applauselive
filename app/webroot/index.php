@@ -43,7 +43,7 @@
 
 	<?php
 		// CONSTRUCTIONG FOOTER
-
+		/*
 		if(empty($page)){
 			$pagetop = 'home';
 		} else
@@ -56,6 +56,7 @@
 		}
 
 		construct_page($pagetop, 'footer.php');
+		*/
 	?>
 
 </body>

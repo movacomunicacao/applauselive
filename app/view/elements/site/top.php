@@ -1,6 +1,7 @@
 <header class="container-fluid">
   <?php include('../../../../app/config/directories.php'); ?>
-  <div class="row justify-content-center px-5 py-4 mb-lg-0 mb-5">
+
+  <div class="row justify-content-center px-5 py-5 mb-lg-0 mb-5">
     <div class="col-lg-3 col-12 text-lg-start text-center pt-lg-0 pt-5">
       <a href="SERVER_DIR">
         <img src="FILES_DIRlogo.webp" alt="logo" class="col-lg-5 col-5 logo">
