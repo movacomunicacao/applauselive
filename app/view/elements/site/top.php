@@ -1,6 +1,5 @@
+<?php include('../../../../app/config/directories.php'); ?>
 <header class="container-fluid">
-  <?php include('../../../../app/config/directories.php'); ?>
-
   <div class="row justify-content-center px-5 py-5 mb-lg-0 mb-5">
     <div class="col-lg-3 col-12 text-lg-start text-center pt-lg-0 pt-5">
       <a href="SERVER_DIR">
@@ -17,5 +16,4 @@
       $pagename = $_GET['page'];
       if($pagename == 'home'){ include 'banners.php'; }
   ?>
-
 </header>

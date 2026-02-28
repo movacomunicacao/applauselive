@@ -23,6 +23,8 @@ echo '<style>header, footer{display:none;}</style>';
 // Route-safe base URL helpers (works with your root .htaccess)
 // -----------------------------
 
+$user_id = $_GET['step'];
+
 $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
 
 // If this file is included by the ROOT router (index.php?page=go), SCRIPT_NAME will be /index.php.
@@ -239,7 +241,7 @@ unset($_SESSION['wizard_errors']);
         </form>
 
         <div class="text-center btn-top-margin">
-            <a href="<?=ROOT.'admin/'?>" class="back2">
+            <a href="<?=ROOT.'feed/'.$user_id?>" class="back2">
                   <i class="fas fa-arrow-left"></i> voltar
             </a>
           </div>

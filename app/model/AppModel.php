@@ -203,6 +203,7 @@ function construct_page($page, $archive){
     global $get_to_replace;
     global $get_result;
     global $items2content;
+    global $user_id;
 
     $site   = explode('/', $_SERVER['PHP_SELF']);
     $path   = SERVER_DIR.PAGES_DIR.$page.DS;

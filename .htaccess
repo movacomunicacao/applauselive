@@ -22,10 +22,21 @@ RewriteRule ^([a-z0-9]+)/item/([a-z0-9]+)/(.*)/?$ index.php?page=$1&id=$2
 ##ADMIN
 
 
+##RewriteCond %(REQUEST_FILENAME) !-f
+##RewriteCond %(REQUEST_FILENAME) !-d
+##RewriteRule ^feed/?$ /app/webroot/login.php
 
 RewriteCond %(REQUEST_FILENAME) !-f
 RewriteCond %(REQUEST_FILENAME) !-d
 RewriteRule ^admin/?$ /app/webroot/login.php
+
+RewriteCond %(REQUEST_FILENAME) !-f
+RewriteCond %(REQUEST_FILENAME) !-d
+RewriteRule ^feed/?$ /app/webroot/login.php
+
+RewriteCond %(REQUEST_FILENAME) !-f
+RewriteCond %(REQUEST_FILENAME) !-d
+RewriteRule ^feed/([a-z0-9]+)/?$ index.php?page=feed&id=$1
 
 RewriteCond %(REQUEST_FILENAME) !-f
 RewriteCond %(REQUEST_FILENAME) !-d

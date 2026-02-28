@@ -28,7 +28,7 @@
 		$site_host = $baseurl.'/';
 	}
 
-	if(strpos($url, "admin") == true){
+	if(strpos($url, "feed") == true){
 		define('SERVER_DIR', $site_host);
 	}
 	else{
@@ -53,6 +53,7 @@
 	define('CONTROLLER_DIR', APP_DIR . '/' . 'controller' . '/');
 	define('MODEL_DIR', SERVER_DIR . APP_DIR . '/' . 'model' . '/');
 	define('ADMIN', 'admin'.'/');
+	define('FEED', 'fedd'.'/');
 
 	//RELATIVES
 	define('CONFIG_REL_DIR', '..' . '/' . 'config' . '/');

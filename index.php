@@ -141,8 +141,6 @@ if($time_now > $time_allowed) {
 */
 include('app/model/AppModel.php');
 
-
-
 /** ______________________________________________________________________________________________________________
 *
 * Initializing website
@@ -152,7 +150,7 @@ include('app/model/AppModel.php');
 
 
 		$page = $_GET['page'];
-		if($page == 'admin' || $page == 'login'){
+		if($page == 'feed' || $page == 'login'){
 			session_start();
 			/*--------- LOGIN POST REQUEST ----------*/
 			if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -203,7 +201,8 @@ include('app/model/AppModel.php');
 						$user_id = $query->fetchColumn();
 
 						$_SESSION['login'] = $user_id;
-						include (WEBROOT_DIR . 'admin.php');
+
+						include (WEBROOT_DIR . 'index.php');
 					} else {
 						include (WEBROOT_DIR . 'login.php');
 					}
@@ -214,10 +213,10 @@ include('app/model/AppModel.php');
 			} else {
 
 				if (!isset($_SESSION['login'])) {
-					include (WEBROOT_DIR . 'login.php');
+					include (WEBROOT_DIR . 'index.php');
 				} else {
 					$user_id = $_SESSION['login'];
-					include (WEBROOT_DIR . 'admin.php');
+					include (WEBROOT_DIR . 'index.php');
 				}
 
 

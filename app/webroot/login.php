@@ -22,7 +22,7 @@
 
          <h1 class="mt-0 mb-5">Veja as mensagens deixadas para você!</h1>
 
-			     <form action="<?= ROOT.'admin'.DS.'4'?>" method="post" enctype="multipart/form-data" class="mt-5">
+			     <form action="<?= ROOT.'feed'?>" method="post" enctype="multipart/form-data" class="mt-5">
 
             <div class="form-group text-start pt-5">
                <label for="user">Usuário</label><br>
