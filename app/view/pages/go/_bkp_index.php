@@ -23,7 +23,7 @@ echo '<style>header, footer{display:none;}</style>';
 // Route-safe base URL helpers (works with your root .htaccess)
 // -----------------------------
 
-$user_id = $_SESSION['login'];
+$user_id = $_GET['step'];
 
 $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
 
@@ -72,10 +72,10 @@ function redirect_to(string $base, string $step): void {
 // Wizard config
 // -----------------------------
 
-$steps = ['category','people','type','message','finish'];
+$steps = ['start','name','email','password','category','people','type','message','finish'];
 
-$step = $_GET['step'] ?? 'category';
-if (!in_array($step, $steps, true)) $step = 'category';
+$step = $_GET['step'] ?? 'start';
+if (!in_array($step, $steps, true)) $step = 'start';
 
 if (!isset($_SESSION['wizard'])) $_SESSION['wizard'] = [];
 $data = &$_SESSION['wizard'];
@@ -96,9 +96,44 @@ function next_step(array $steps, string $step): ?string {
 function validate_step(string $step, array $post, array &$data): array {
   $errors = [];
 
+  $name     = trim((string)($post['name'] ?? ($data['name'] ?? '')));
+  $email    = trim((string)($post['email'] ?? ($data['email'] ?? '')));
+  $password = (string)($post['password'] ?? ($data['password'] ?? ''));
   $category = (string)($post['category'] ?? ($data['category'] ?? ''));
   $people   = (string)($post['people'] ?? ($data['people'] ?? ''));
   $type     = (string)($post['type'] ?? ($data['type'] ?? ''));
+
+  if ($step === 'name') {
+    if ($name === '') $errors['name'] = '*Campo vazio, preencha para continuar.';
+    else $data['name'] = $name;
+  }
+
+  if ($step === 'email') {
+    
+    if ($email !== '') $needle = strtolower($email);
+    if ($name === '') $errors['name'] = 'Nome ausente. Volte e preencha.';
+    if ($email === '') {
+      $errors['email'] = '*Campo vazio, preencha para continuar.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $errors['email'] = '*E-mail inválido.';
+    } elseif (strpos($needle, 'elancoah') === false) {
+      $errors['email'] = '*E-mail inválido. Use um e-mail corporativo da Elanco.';
+    } else {
+      $data['name']  = $name;
+      $data['email'] = $email;
+    }
+  }
+
+  if ($step === 'password') {
+    if ($name === '') $errors['name'] = 'Nome ausente. Volte e preencha.';
+    if ($email === '') $errors['email'] = 'E-mail ausente. Volte e preencha.';
+    if (trim($password) === '') $errors['password'] = '*Campo vazio, preencha para continuar.';
+    else {
+      $data['name']     = $name;
+      $data['email']    = $email;
+      $data['password'] = $password;
+    }
+  }
 
   if ($step === 'category') {
     if ($category === '' || $category === '0') $errors['category'] = '*Campo vazio, preencha para continuar.';
@@ -156,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // ✅ FIRST: If user clicked "back", skip validation entirely
     if (isset($_POST['go']) && $_POST['go'] === 'back') {
         $prev = prev_step($steps, $postedStep);
-        redirect_to($wizardBase, $prev ?? 'category');
+        redirect_to($wizardBase, $prev ?? 'start');
     }
 
     // ✅ Only validate when moving forward
@@ -194,7 +229,106 @@ unset($_SESSION['wizard_errors']);
   <div class="row w-100">
     <div class="col-lg-8 col-11 text-center mx-auto">
 
-      <?php if ($step === 'category'): ?>
+      <?php if ($step === 'start'): ?>
+        <h1 class="pt-5">
+          <p class="mt-5">Olá!</p>
+          <p>Seja bem-vindo(a) a<br>esta ação applause! Ruminantes<br></p>
+        </h1>
+
+        <form method="get" action="<?=h($wizardBase)?>name" class="mt-4">
+          <input type="hidden" name="step" value="name">
+          <button type="submit" class="btn btn-outline-light">Vamos iniciar!</button>
+        </form>
+
+        <div class="text-center btn-top-margin">
+            <a href="<?=ROOT.'feed/'.$user_id?>" class="back2">
+                  <i class="fas fa-arrow-left"></i> voltar
+            </a>
+          </div>
+
+      <?php elseif ($step === 'name'): ?>
+        <form method="post" action="<?=h($wizardBase)?>">
+          <input type="hidden" name="step" value="name">
+          <div class="form-group text-start">
+            <label>Nome*:</label>
+            <?php if (!empty($errors['name'])): ?>
+              <br><span class="error"><?=h((string)$errors['name'])?></span>
+            <?php endif; ?>
+            <input type="text" name="name" class="form-control mt-5 form-control-lg search" placeholder="Digite seu nome"
+              value="<?=h((string)($data['name'] ?? ''))?>">
+          </div>
+          <div class="text-center btn-top-margin">
+            <button type="submit" class="btn btn-home mt-4">continuar</button>
+          </div>
+
+          <div class="text-center btn-top-margin">
+            <a href="<?=ROOT?>" class="back2">
+                  <i class="fas fa-arrow-left"></i> voltar
+            </a>
+          </div>
+          
+
+        </form>
+
+      <?php elseif ($step === 'email'): ?>
+        <form method="post" action="<?=h($wizardBase)?>">
+          <input type="hidden" name="step" value="email">
+          <input type="hidden" name="name" value="<?=h((string)($data['name'] ?? ''))?>">
+
+          <div class="form-group text-start">
+            <label>E-mail Corporativo*:</label>
+            <br><div class="tip">*Se você já se cadastrou antes, use o mesmo email.</div><br>
+
+            <?php if (!empty($errors['email'])): ?>
+              <br><span class="error"><?=h((string)$errors['email'])?></span>
+            <?php endif; ?>
+
+            <input type="email" name="email" class="form-control mt-5 form-control-lg search"
+              placeholder="Digite seu E-mail corporativo"
+              value="<?=h((string)($data['email'] ?? ''))?>">
+          </div>
+
+          <div class="text-center btn-top-margin">
+            <button type="submit" class="btn btn-home mt-4">continuar</button>
+          </div>
+
+          <button type="submit" name="go" value="back" class="back" style="color:#fff !important;">
+            <i class="fas fa-arrow-left"></i> voltar
+          </button>
+        </form>
+
+      <?php elseif ($step === 'password'): ?>
+        <form method="post" action="<?=h($wizardBase)?>">
+          <input type="hidden" name="step" value="password">
+          <input type="hidden" name="name" value="<?=h((string)($data['name'] ?? ''))?>">
+          <input type="hidden" name="email" value="<?=h((string)($data['email'] ?? ''))?>">
+
+          <div class="form-group text-start">
+            <label>Senha*:</label>
+            <br><div class="tip">*Se você já se cadastrou antes, use a mesma senha.</div><br>
+
+            <?php if (!empty($errors['password'])): ?>
+              <br><span class="error"><?=h((string)$errors['password'])?></span>
+            <?php endif; ?>
+
+            <input type="password" name="password" class="form-control mt-5 form-control-lg search" placeholder="Digite uma senha">
+            <p class="mt-3">
+              <a href="https://wa.me/5545999683799?text=Esqueci%20minha%20senha%20usuario%20<?=h((string)($data['email'] ?? ''))?>" class="tip">
+                Esqueci minha senha
+              </a>
+            </p>
+          </div>
+
+          <div class="text-center btn-top-margin">
+            <button type="submit" class="btn btn-home mt-4">continuar</button>
+          </div>
+
+          <button type="submit" name="go" value="back" class="back" style="color:#fff !important;">
+            <i class="fas fa-arrow-left"></i> voltar
+          </button>
+        </form>
+
+      <?php elseif ($step === 'category'): ?>
         <form method="post" action="<?=h($wizardBase)?>">
           <input type="hidden" name="step" value="category">
 
@@ -391,13 +525,9 @@ unset($_SESSION['wizard_errors']);
 
         <?php
 
-          $conn = db();
-          foreach($conn->query("SELECT * FROM users WHERE id = '$user_id' ") as $row) {
-						$name		  = $row['title'];
-            $email		= $row['email'];
-            $password = $row['password'];
-					}
-
+          $name       = $data['name'];
+          $email      = $data['email'];
+          $password   = $data['password'];
           $category   = $data['category'];
           $people     = $data['people'];
           $type       = $data['type'];
@@ -420,7 +550,7 @@ unset($_SESSION['wizard_errors']);
           $datenow = date('Y-m-d h:m:s');
           $crypted_password = encrypting("encrypt", $password, $key_sk, $key_siv);
 
-          
+          $conn = db();
           $query = $conn->prepare("SELECT email FROM users WHERE email = :email");
           $query->bindParam(':email', $email);
           $query->execute();
@@ -434,8 +564,8 @@ unset($_SESSION['wizard_errors']);
             $active = '1';
 
             $query = $conn->prepare(
-              "INSERT INTO users (title, email, password, keypass, key_iv, key_tag, avatar, created, updated, reference, active) 
-               VALUES (:title, :email, :password, :keypass, :key_iv, :key_tag, :avatar, :created, :updated, :reference, :active)"
+              "INSERT INTO users (title, email, password, keypass, key_iv, key_tag, created, updated, reference, active) 
+               VALUES (:title, :email, :password, :keypass, :key_iv, :key_tag, :created, :updated, :reference, :active)"
             );
 
             $query->bindParam(':title', $name);
@@ -444,7 +574,6 @@ unset($_SESSION['wizard_errors']);
             $query->bindParam(':keypass', $crypted_password);
             $query->bindParam(':key_iv', $key_sk);
             $query->bindParam(':key_tag', $key_siv);
-            $query->bindParam(':avatar', 'photo.webp');
             $query->bindParam(':created', $created);
             $query->bindParam(':updated', $updated);
             $query->bindParam(':reference', $reference);

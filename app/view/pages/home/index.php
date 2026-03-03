@@ -1,8 +1,4 @@
-<?php
-    require (ELEMENTS_DIR .'head.php');
-?>
 
-<body>
   <div class="container-fluid mt-5 pt-5">
 
     <div class="row justify-content-center py-5">
@@ -34,5 +30,3 @@
 	</div>
 
   </div>
-</body>
-</html>

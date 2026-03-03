@@ -237,6 +237,32 @@
 	}
 
 
+//------------- CREATE USER -------------------------------------------------------------------------------------------------
+
+
+	elseif($action == 'createuser'){
+
+		$username	= $_POST['username'];	
+		$email 		= $_POST['email'];	
+		$password	= $_POST['password'];	
+		$data['avatar'] = $_FILES['avatar'];
+        $avatar = $data['avatar']['name'];
+        $datename = date('Y-m-d-h-m-s');
+        $avatar = $datename."---".$avatar;
+
+		echo $username.'<br>';
+		echo $email.'<br>';
+		echo $password.'<br>';
+		echo $avatar.'<br>';
+		die();
+
+
+		//$_UP['folder']	= '../webroot/img/avatar/';
+		//move_uploaded_file($_FILES['avatar']['tmp_name'], $_UP['folder'] . $img);
+
+	}
+
+
 //------------- GALLERY -------------------------------------------------------------------------------------------------
 
 

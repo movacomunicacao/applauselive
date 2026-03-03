@@ -5,6 +5,10 @@
 
 	require (ELEMENTS_DIR .'head.php');
 
+	if(!isset($_SESSION['login'])){
+		echo '<script>window.location.replace("'.ROOT.'");</script>';
+	}
+
 ?>
 
 

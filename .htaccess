@@ -48,6 +48,10 @@ RewriteRule ^admin/add/([a-z0-9]+)$/? index.php?page=admin&id=$1&action=add
 
 RewriteCond %(REQUEST_FILENAME) !-f
 RewriteCond %(REQUEST_FILENAME) !-d
+RewriteRule ^admin/createuser/([a-z0-9]+)$/? index.php?page=admin&id=$1&action=createuser
+
+RewriteCond %(REQUEST_FILENAME) !-f
+RewriteCond %(REQUEST_FILENAME) !-d
 RewriteRule ^admin/edit/([a-z0-9]+)/([a-z0-9]+)$/? index.php?page=admin&id=$1&item=$2&action=edit
 
 RewriteCond %(REQUEST_FILENAME) !-f
