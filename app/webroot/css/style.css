@@ -266,6 +266,29 @@ label{
 }
 
 
+.password-wrapper{
+position:relative;
+}
+
+.password-wrapper input{
+width:100%;
+padding-right:60px;
+}
+
+.toggle-eye{
+position:absolute;
+right:20px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+font-size:36px;
+color:#666;
+}
+
+.toggle-eye:hover{
+color:#000;
+}
+
 /* -------------------------------------------------------------------------------------------------------
                                             ADMIN
 --------------------------------------------------------------------------------------------------------*/

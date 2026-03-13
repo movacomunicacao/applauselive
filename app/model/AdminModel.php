@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 
 //------------- INIT ---------------------------------------------------------------------------------------
 
@@ -258,52 +259,55 @@
 
 		// VALIDATIONS
 
-		$validations = '';
+		$errors = [];
+		$old = $_POST;
+
 		$conn = db();
 
+		/* USERNAME CHECK */
 		$query = $conn->prepare("SELECT title FROM users WHERE title = :user");
 		$query->bindParam(':user', $username);
 		$query->execute();
 
-		if ($query->rowCount() > 0){
-			$validations .= 'usernametaken';
+		if ($query->rowCount() > 0) {
+			$errors['username'] = "Este usuário já existe.";
 		}
 
+		/* EMAIL CHECK */
 		$query = $conn->prepare("SELECT email FROM users WHERE email = :email");
 		$query->bindParam(':email', $email);
 		$query->execute();
 
-		if ($query->rowCount() > 0){
-			$validations .= 'emailtaken';
+		if ($query->rowCount() > 0) {
+			$errors['email'] = "Este e-mail já existe.";
 		}
 
+		/* PASSWORD CHECK */
 		if($password != $confirmpassword){
-			$validations .= 'unmatchingpass';
+			$errors['password'] = "Senhas não batem.";
 		}
 
+		/* COMPANY CHECK */
 		if(empty($company) || $company == 'companychoice'){
-			$validations .= 'emptycompany';
+			$errors['company'] = "Selecione uma empresa.";
 		}
 
+		/* CATEGORY CHECK */
 		if(empty($category) || $category == 'categorychoice'){
-			$validations .= 'emptycategory';
+			$errors['category'] = "Selecione um departamento.";
 		}
 
 
-		// ALWAYS BUILD COMEBACK IN FIXED ORDER
-		$email_replaced = str_replace("@", "-atsymbol-", $email);
+		/* RETURN IF ERROR */
 
-		$comeback =
-		'---'.$username.
-		'---'.$email_replaced.
-		'---'.$company.
-		'---'.$category;
+		if(!empty($errors)){
 
+			$_SESSION['form_errors'] = $errors;
+			$_SESSION['form_old'] = $old;
 
-		// REDIRECT IF ERROR
-		if(!empty($validations)){
-			header("Location:".ROOT."register/item/".$validations.$comeback."/1");
+			header("Location: ".ROOT."register");
 			exit;
+
 		}
 		
 		$key_sk   	= random_bytes(32);
@@ -406,16 +410,23 @@
 
 
 
-//------------- CLOSE CONN AND REDIRECT ---------------------------------------------------------------------------------------
+///------------- CLOSE CONN AND REDIRECT ---------------------------------------------------------------------------------------
 
-	$conn=null;
+$conn = null;
 
-	if($action == 'result' || $action == 'confirm' || $action == 'confirmdelete'){
-		$redirect_url = SERVER_DIR . ADMIN . '1';
-	} else {
-		//$redirect_url = SERVER_DIR . ADMIN . $_GET['id'];
-		$redirect_url = ROOT;
-	}
+/* SUCCESS SCREEN AFTER USER CREATION */
+
+if($action == 'createuser'){
+	include ROOT.HELPER_DIR.'success.php';
+	exit;
+}
+
+
+if($action == 'result' || $action == 'confirm' || $action == 'confirmdelete'){
+	$redirect_url = SERVER_DIR . ADMIN . '1';
+} else {
+	$redirect_url = ROOT;
+}
 
 header('Location:'. $redirect_url);
 
