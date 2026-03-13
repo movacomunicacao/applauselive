@@ -17,7 +17,7 @@ RewriteRule ^([a-z]+)/?$ index.php?page=$1
 
 RewriteCond %(REQUEST_FILENAME) !-f
 RewriteCond %(REQUEST_FILENAME) !-d
-RewriteRule ^([a-z0-9]+)/item/([a-z0-9]+)/(.*)/?$ index.php?page=$1&id=$2
+RewriteRule ^([a-z0-9]+)/item/(.*)/(.*)/?$ index.php?page=$1&id=$2
 
 ##ADMIN
 
