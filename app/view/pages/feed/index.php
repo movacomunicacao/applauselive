@@ -7,6 +7,12 @@
 
 	if(!isset($_SESSION['login'])){
 		echo '<script>window.location.replace("'.ROOT.'");</script>';
+	} else {
+		//echo '<h1>'.$_SESSION['login'].'</h1><br><br>';
+		if( $_GET['id'] != $_SESSION['login']){
+			$id_session = $_SESSION['login'];
+			echo '<script>window.location.replace("'.ROOT.'feed/'.$id_session.'");</script>';
+		}
 	}
 
 ?>

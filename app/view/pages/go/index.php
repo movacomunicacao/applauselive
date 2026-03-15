@@ -128,12 +128,12 @@ function validate_step(string $step, array $post, array &$data): array {
         $data['message_video'] = $_FILES['message'];
         $file = $data['message_video']['name'];
         $datename = date('Y-m-d-h-m-s');
-        $video_title = $datename."---from-".$data['email']."-to-".$data['people']."---".$file;
-        $data['video_full_title'] = $video_title;
+        $video_message = $datename."---from-".$data['email']."-to-".$data['people']."---".$file;
+        $data['video_full_title'] = $video_message;
         $message = '';
 
         $_UP['folder']	= 'app/webroot/videos/';
-				move_uploaded_file($data['message_video']['tmp_name'], $_UP['folder'] . $video_title);
+				move_uploaded_file($data['message_video']['tmp_name'], $_UP['folder'] . $video_message);
 
       }
     }
@@ -395,7 +395,6 @@ unset($_SESSION['wizard_errors']);
           foreach($conn->query("SELECT * FROM users WHERE id = '$user_id' ") as $row) {
 						$name		  = $row['title'];
             $email		= $row['email'];
-            $password = $row['password'];
 					}
 
           $category   = $data['category'];
@@ -404,71 +403,34 @@ unset($_SESSION['wizard_errors']);
 
           if($type == "text"){
             $message = $data['message_text'];
-            $video_title = '';
+            $video_message = '';
           } else {
             $message = '';
-            $video_title = $data['video_full_title'];
+            $video_message = $data['video_full_title'];
           }
 
-          $key_sk   = random_bytes(32);
-          $key_siv  = random_bytes(32);
-          $key_sk   = base64_encode($key_sk);
-          $key_siv  = base64_encode($key_siv);
-          $key_sk   = hash("sha256", $key_sk);
-          $key_siv  = substr(hash("sha256", $key_siv), 0, 16);
 
-          $datenow = date('Y-m-d h:m:s');
-          $crypted_password = encrypting("encrypt", $password, $key_sk, $key_siv);
-
-          
-          $query = $conn->prepare("SELECT email FROM users WHERE email = :email");
-          $query->bindParam(':email', $email);
-          $query->execute();
-
-          if ($query->rowCount() > 0) {
-            $keypass = $query->fetchColumn();
-          } else {
-            $created = date("Y-m-d");
-            $updated = date("Y-m-d");
-            $reference = date("Ymdhs") . uniqid();
-            $active = '1';
-
-            $query = $conn->prepare(
-              "INSERT INTO users (title, email, password, keypass, key_iv, key_tag, avatar, created, updated, reference, active) 
-               VALUES (:title, :email, :password, :keypass, :key_iv, :key_tag, :avatar, :created, :updated, :reference, :active)"
-            );
-
-            $query->bindParam(':title', $name);
-            $query->bindParam(':email', $email);
-            $query->bindParam(':password', $crypted_password);
-            $query->bindParam(':keypass', $crypted_password);
-            $query->bindParam(':key_iv', $key_sk);
-            $query->bindParam(':key_tag', $key_siv);
-            $query->bindParam(':avatar', 'photo.webp');
-            $query->bindParam(':created', $created);
-            $query->bindParam(':updated', $updated);
-            $query->bindParam(':reference', $reference);
-            $query->bindParam(':active', $active);
-            $query->execute();
-          }
+          $tz = new DateTimeZone('America/Sao_Paulo');
+          $datenow = new DateTime('now', $tz);
+          $datenow = $datenow->format('Y-m-d H:i:s');
 
           $query = $conn->prepare("SELECT title FROM people WHERE id = :people");
           $query->bindParam(':people', $people);
           $query->execute();
           $people_name = $query->fetchColumn();
 
-          $sql = "INSERT INTO messages (id_typeform, name, email, password, recipient, como, upload, text_message, response_type, start_date, stage_date, submit_date, network_id, tags, ending) 
-              VALUES ('id_typeform', :name, :email, :password, :people_name, :type, :video_title, :message, :type, :datenow, :datenow, :datenow, 'network_id', 'tag', 'ending')";
+          $sql = "INSERT INTO messages (name, email, recipient, response_type, video_message, text_message, submit_date) 
+              VALUES (:name, :email, :recipient, :response_type, :video_message, :text_message, :datenow, :type)";
 
           $query = $conn->prepare($sql);
           $query->bindParam(':name', $name);
           $query->bindParam(':email', $email);
-          $query->bindParam(':password', $crypted_password);
-          $query->bindParam(':people_name', $people_name);
-          $query->bindParam(':type', $type);
-          $query->bindParam(':video_title', $video_title);
-          $query->bindParam(':message', $message);
+          $query->bindParam(':recipient', $people_name);
+          $query->bindParam(':response_type', $type);
+          $query->bindParam(':video_message', $video_message);
+          $query->bindParam(':text_message', $message);
           $query->bindParam(':datenow', $datenow);
+          $query->bindParam(':type', '1');
           $query->execute();
 
 
@@ -477,7 +439,7 @@ unset($_SESSION['wizard_errors']);
 
         <div class="row justify-content-center text-center btn-top-margin">
           <div class="col-10 mt-5">
-            <a href="<?=ROOT?>" style="color:#fff !important;"><i class="fas fa-arrow-left"></i> Home</a>
+            <a href="<?=ROOT?>feed/<?=$user_id?>" style="color:#fff !important;"><i class="fas fa-arrow-left"></i> Home</a>
           </div>
         </div>
 

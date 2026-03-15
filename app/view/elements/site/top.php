@@ -13,7 +13,7 @@
 
   <?php
       // HERE YOU CONTROL WHICH PAGES YOU WANT THE MAIN BANNER TO SHOW UP
-      $pagename = $_GET['page'];
-      if($pagename == 'home'){ include 'banners.php'; }
+      //$pagename = $_GET['page'];
+      //if($pagename == 'home'){ include 'banners.php'; }
   ?>
 </header>

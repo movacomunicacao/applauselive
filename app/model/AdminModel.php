@@ -249,12 +249,19 @@ session_start();
 		$confirmpassword	= $_POST['confirmpassword'];	
 		$company			= $_POST['company'];
 		$category			= $_POST['category'];
-		$data['avatar']		= $_FILES['avatar'];
-        $avatar 			= $data['avatar']['name'];
-        $datename 			= date('Y-m-d-h-m-s-u');
-        $avatar 			= $datename."---".$avatar;
-		$_UP['folder']		= '../webroot/img/avatar/';
 		
+		
+
+		if(isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK){
+			$data['avatar']		= $_FILES['avatar'];
+			$avatar 			= $data['avatar']['name'];
+			$datename 			= date('Y-m-d-h-m-s-u');
+			$avatar 			= $datename."---".$avatar;
+			$_UP['folder']		= '../webroot/img/avatar/';
+			move_uploaded_file($_FILES['avatar']['tmp_name'], $_UP['folder'] . $avatar);
+		} else {
+			$avatar = 'nophoto.webp';
+		}
 
 
 		// VALIDATIONS
@@ -265,21 +272,23 @@ session_start();
 		$conn = db();
 
 		/* USERNAME CHECK */
+		/*
 		$query = $conn->prepare("SELECT title FROM users WHERE title = :user");
 		$query->bindParam(':user', $username);
 		$query->execute();
-
 		if ($query->rowCount() > 0) {
 			$errors['username'] = "Este usuário já existe.";
 		}
+		*/
 
 		/* EMAIL CHECK */
-		$query = $conn->prepare("SELECT email FROM users WHERE email = :email");
+		$query = $conn->prepare("SELECT email FROM users WHERE email = :email AND company = :company");
 		$query->bindParam(':email', $email);
+		$query->bindParam(':company', $company);
 		$query->execute();
 
 		if ($query->rowCount() > 0) {
-			$errors['email'] = "Este e-mail já existe.";
+			$errors['email'] = "Este e-mail já existe nesta empresa.";
 		}
 
 		/* PASSWORD CHECK */
@@ -359,9 +368,119 @@ session_start();
         $query->bindParam(':active', $active);
     	$query->execute();
 
-		move_uploaded_file($_FILES['avatar']['tmp_name'], $_UP['folder'] . $avatar);
 
 	}
+
+
+//------------- CREATE COMPANY -------------------------------------------------------------------------------------------------
+
+elseif($action == 'createcompany'){
+
+	$nome 			= $_POST['nome'];
+	$descricao 		= $_POST['descricao'];
+	$cor_principal 	= $_POST['cor_principal'];
+	$cor_texto 		= $_POST['cor_texto'];
+
+
+	// LOGO UPLOAD
+
+	if(isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK){
+
+		$data['logo'] 	= $_FILES['logo'];
+		$logo 			= $data['logo']['name'];
+		$datename 		= date('Y-m-d-h-m-s-u');
+		$logo 			= $datename."---".$logo;
+
+		$_UP['folder']	= '../webroot/img/avatar/';
+
+		move_uploaded_file($_FILES['logo']['tmp_name'], $_UP['folder'] . $logo);
+
+	}else{
+
+		$logo = 'nologo.webp';
+
+	}
+
+
+	// VALIDATIONS
+
+	$errors = [];
+	$old = $_POST;
+
+	$conn = db();
+
+
+	/* NAME CHECK */
+
+	if(empty($nome)){
+		$errors['nome'] = "Digite o nome da empresa.";
+	}
+
+
+	/* NAME ALREADY EXISTS */
+
+	$query = $conn->prepare("SELECT title FROM company WHERE title = :nome");
+	$query->bindParam(':nome', $nome);
+	$query->execute();
+
+	if ($query->rowCount() > 0) {
+		$errors['nome'] = "Esta empresa já existe.";
+	}
+
+
+	/* DESCRIPTION CHECK */
+
+	if(empty($descricao)){
+		$errors['descricao'] = "Digite uma descrição.";
+	}
+
+
+	/* COLOR PRIMARY CHECK */
+
+	if(empty($cor_principal)){
+		$errors['cor_principal'] = "Selecione a cor principal.";
+	}
+
+
+	/* COLOR TEXT CHECK */
+
+	if(empty($cor_texto)){
+		$errors['cor_texto'] = "Selecione a cor do texto.";
+	}
+
+
+	/* RETURN IF ERROR */
+
+	if(!empty($errors)){
+
+		$_SESSION['form_errors'] = $errors;
+		$_SESSION['form_old'] = $old;
+
+		header("Location: ".ROOT."company");
+		exit;
+
+	}
+
+
+	$created 	= date("Y-m-d");
+	$updated 	= date("Y-m-d");
+	$reference 	= date("Ymdhs") . uniqid();
+	$active 	= '1';
+
+
+	$query = $conn->prepare("INSERT INTO company (title, img, description, color1, color2, banner, created, active)
+	VALUES (:title, :img, :description, :color_primary, :color_text, '', :created, '1')");
+
+	$query->bindParam(':title', $nome);
+	$query->bindParam(':img', $logo);
+	$query->bindParam(':description', $descricao);
+	$query->bindParam(':color_primary', $cor_principal);
+	$query->bindParam(':color_text', $cor_texto);
+	$query->bindParam(':created', $created);
+
+	$query->execute();
+
+}
 
 
 //------------- GALLERY -------------------------------------------------------------------------------------------------
@@ -416,7 +535,7 @@ $conn = null;
 
 /* SUCCESS SCREEN AFTER USER CREATION */
 
-if($action == 'createuser'){
+if($action == 'createuser' OR $action == 'createcompany'){
 	include ROOT.HELPER_DIR.'success.php';
 	exit;
 }

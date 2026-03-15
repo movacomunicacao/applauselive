@@ -31,7 +31,7 @@ $status_category = $errors['category'] ?? '';
       <form id="myForm" action="<?= ROOT.'admin'.DS.'model'.DS.'createuser'.DS.'1'.DS.'1' ?>" method="post" enctype="multipart/form-data" class="mt-5">
 
         <div class="form-group text-start">
-        <label for="username">Usuário</label>
+        <label for="username">Nome Completo</label>
         <?php if($status_username): ?>
             <br><span class="error"><?= $status_username ?></span><br>
         <?php endif; ?>

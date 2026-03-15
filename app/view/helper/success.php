@@ -132,7 +132,8 @@ p{
 
 <script>
 setTimeout(function(){
-    window.location.href = "'.ROOT.'";
+    //window.location.href = "'.ROOT.'";
+    window.location.href = "http://localhost:8888/applauselive";
 },6000);
 </script>
 
